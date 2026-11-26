@@ -45,9 +45,23 @@ p {
 .layout {
     flex: 1;
     display: grid;
-    grid-template-columns: 25.4rem minmax(0, 1fr);
+    /* Sidebar widens with the Button Size setting so its labels still fit */
+    grid-template-columns: calc(25.4rem * var(--button-scale, 1)) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
     height: 100svh; /* exactly one screen, like a TV app */
+}
+
+/*
+ * BUTTON SIZE (accessibility setting): AccessibilityProvider sets
+ * --button-scale on <html> (1 = normal). `zoom` scales each page button's
+ * whole box (size, text and icon) while the layout reflows around it. The
+ * sidebar is scaled as a whole (buttons, padding and gaps) so it stays in proportion.
+ * The accessibility pop-up's own controls are deliberately not scaled.
+ */
+.btn,
+.sidebar,
+.search__mic {
+    zoom: var(--button-scale, 1);
 }
 
 /* Shared buttons */

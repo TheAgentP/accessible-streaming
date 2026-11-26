@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { BUTTON_SIZE, useAccessibility } from "../accessibility/settings";
 import { MinusIcon, PlusIcon } from "./Icons";
 import Scrollbar from "./Scrollbar";
 import "./AccessibilityModal.css";
@@ -8,36 +9,20 @@ type Props = {
     onClose: () => void;
 };
 
-const DEFAULTS = {
-    fontSize: 42,
-    buttonSize: 42,
-    contrast: 50,
-    brightness: 50,
-    narrator: false,
-    sensitivity: 42,
-};
-
-// NOTE: settings are hardcoded / local-only for now. The values update on screen
-// but are not yet applied to the rest of the app.
+// Settings live in AccessibilityProvider so they apply app-wide and persist.
+// Currently applied to the page: BUTTON SIZE. The rest are stored but not yet applied.
 export default function AccessibilityModal({ open, onClose }: Props) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const bodyRef = useRef<HTMLDivElement>(null);
 
-    const [fontSize, setFontSize] = useState(DEFAULTS.fontSize);
-    const [buttonSize, setButtonSize] = useState(DEFAULTS.buttonSize);
-    const [contrast, setContrast] = useState(DEFAULTS.contrast);
-    const [brightness, setBrightness] = useState(DEFAULTS.brightness);
-    const [narrator, setNarrator] = useState(DEFAULTS.narrator);
-    const [sensitivity, setSensitivity] = useState(DEFAULTS.sensitivity);
+    const { settings, update, reset } = useAccessibility();
+    const { fontSize, buttonSize, contrast, brightness, narrator, sensitivity } = settings;
 
-    const resetToDefault = () => {
-        setFontSize(DEFAULTS.fontSize);
-        setButtonSize(DEFAULTS.buttonSize);
-        setContrast(DEFAULTS.contrast);
-        setBrightness(DEFAULTS.brightness);
-        setNarrator(DEFAULTS.narrator);
-        setSensitivity(DEFAULTS.sensitivity);
-    };
+    const changeButtonSize = (delta: number) =>
+        update(
+            "buttonSize",
+            Math.min(BUTTON_SIZE.max, Math.max(BUTTON_SIZE.min, buttonSize + delta)),
+        );
 
     // Native <dialog> + showModal() gives us focus trapping, Esc-to-close
     // and an inert background for free.
@@ -77,7 +62,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Decrease font size"
-                            onClick={() => setFontSize((v) => v - 1)}
+                            onClick={() => update("fontSize", fontSize - 1)}
                         >
                             LESS <MinusIcon className="a11y-step__icon" />
                         </button>
@@ -88,7 +73,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Increase font size"
-                            onClick={() => setFontSize((v) => v + 1)}
+                            onClick={() => update("fontSize", fontSize + 1)}
                         >
                             MORE <PlusIcon className="a11y-step__icon" />
                         </button>
@@ -105,7 +90,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             min={0}
                             max={100}
                             value={contrast}
-                            onChange={(e) => setContrast(Number(e.target.value))}
+                            onChange={(e) => update("contrast", Number(e.target.value))}
                         />
                     </div>
 
@@ -114,7 +99,8 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Decrease button size"
-                            onClick={() => setButtonSize((v) => v - 1)}
+                            disabled={buttonSize <= BUTTON_SIZE.min}
+                            onClick={() => changeButtonSize(-BUTTON_SIZE.step)}
                         >
                             LESS <MinusIcon className="a11y-step__icon" />
                         </button>
@@ -125,7 +111,8 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Increase button size"
-                            onClick={() => setButtonSize((v) => v + 1)}
+                            disabled={buttonSize >= BUTTON_SIZE.max}
+                            onClick={() => changeButtonSize(BUTTON_SIZE.step)}
                         >
                             MORE <PlusIcon className="a11y-step__icon" />
                         </button>
@@ -142,7 +129,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             min={0}
                             max={100}
                             value={brightness}
-                            onChange={(e) => setBrightness(Number(e.target.value))}
+                            onChange={(e) => update("brightness", Number(e.target.value))}
                         />
                     </div>
 
@@ -158,7 +145,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             className="a11y-switch"
                             aria-labelledby="a11y-narrator-label"
                             aria-checked={narrator}
-                            onClick={() => setNarrator((v) => !v)}
+                            onClick={() => update("narrator", !narrator)}
                         >
                             <span className="a11y-switch__knob" aria-hidden="true">
                                 {narrator ? "TURN OFF" : "TURN ON"}
@@ -171,7 +158,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Decrease sensitivity"
-                            onClick={() => setSensitivity((v) => v - 1)}
+                            onClick={() => update("sensitivity", sensitivity - 1)}
                         >
                             LESS <MinusIcon className="a11y-step__icon" />
                         </button>
@@ -182,7 +169,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Increase sensitivity"
-                            onClick={() => setSensitivity((v) => v + 1)}
+                            onClick={() => update("sensitivity", sensitivity + 1)}
                         >
                             MORE <PlusIcon className="a11y-step__icon" />
                         </button>
@@ -196,7 +183,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-toggle a11y-reset"
                             aria-labelledby="a11y-reset-label"
-                            onClick={resetToDefault}
+                            onClick={reset}
                         >
                             RESET
                         </button>

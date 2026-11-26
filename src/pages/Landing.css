@@ -71,7 +71,8 @@
     margin: 2.5rem 0.4rem 0.4rem 0.7rem;
     padding: 0.7rem;
     display: grid;
-    grid-template-columns: minmax(0, 54fr) minmax(0, 46fr);
+    /* Info column never gets narrower than WATCH + NEXT at the current button size */
+    grid-template-columns: minmax(0, 54fr) minmax(calc(32rem * var(--button-scale, 1)), 46fr);
     grid-template-rows: minmax(0, 1fr); /* card height comes from the screen, not its text */
     gap: 1.6rem;
 }
