@@ -29,7 +29,7 @@
 }
 
 .a11y-modal__close {
-    background: var(--light-2);
+    background: rgba(255, 255, 255, 0.65); /* 65% white, per the design */
     color: var(--dark);
     font-size: 4.2rem;
     line-height: 1;
@@ -39,7 +39,7 @@
 }
 
 .a11y-modal__close:hover {
-    background: var(--light);
+    background: rgba(255, 255, 255, 0.85);
 }
 
 /* White settings panel + custom scrollbar side by side */

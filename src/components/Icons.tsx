@@ -23,15 +23,16 @@ export function CameraIcon({ className }: IconProps) {
 export function MaskIcon({ className }: IconProps) {
     return (
         <svg className={className} viewBox="0 0 48 56" aria-hidden="true">
+            {/* Face with eyes and mouth cut out as real holes (evenodd), so
+                whatever is behind the icon shows through */}
             <path
                 fill="currentColor"
-                d="M4 4 C16 0 32 0 44 4 C46 22 42 44 24 54 C6 44 2 22 4 4 Z"
+                fillRule="evenodd"
+                d="M4 4 C16 0 32 0 44 4 C46 22 42 44 24 54 C6 44 2 22 4 4 Z
+                   M11 18 C14 14 19 14 21 18 C18 21 14 21 11 18 Z
+                   M27 18 C29 14 34 14 37 18 C34 21 30 21 27 18 Z
+                   M14 32 C20 38 28 38 34 32 C31 42 17 42 14 32 Z"
             />
-            <g fill="var(--mask-cutout, #071f35)">
-                <path d="M11 18 C14 14 19 14 21 18 C18 21 14 21 11 18 Z" />
-                <path d="M27 18 C29 14 34 14 37 18 C34 21 30 21 27 18 Z" />
-                <path d="M14 32 C20 38 28 38 34 32 C31 42 17 42 14 32 Z" />
-            </g>
         </svg>
     );
 }

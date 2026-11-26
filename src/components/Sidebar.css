@@ -5,11 +5,11 @@
     display: flex;
     flex-direction: column;
     gap: 1.7rem;
-    --mask-cutout: var(--dark-2);
 }
 
 .sidebar__btn {
-    background: var(--dark-2);
+    /* 15% white over the dark sidebar, per the design */
+    background: rgba(255, 255, 255, 0.15);
     color: var(--light);
     border: none;
     border-radius: 0;
@@ -28,7 +28,7 @@
 }
 
 .sidebar__btn:hover {
-    background: var(--mid);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .sidebar__btn--genre {
