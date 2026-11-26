@@ -1,0 +1,73 @@
+/* Hide the browser's own scrollbar on an element that uses <Scrollbar> */
+.hide-native-scrollbar {
+    scrollbar-width: none;
+}
+.hide-native-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Sizes in rem (1rem = 1% of window width), measured from the mockup */
+.scrollbar {
+    width: 3.7rem;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--dark);
+    border-left: 0.25rem solid var(--light-2);
+    user-select: none;
+}
+
+.scrollbar__arrow {
+    background: var(--dark);
+    color: var(--light-2);
+    padding: 0.4rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.scrollbar__arrow:hover {
+    color: var(--light);
+}
+
+.scrollbar__arrow svg {
+    width: 1.8rem;
+    height: 2.1rem;
+}
+
+.scrollbar__track {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+    border-block: 0.25rem solid var(--light-2);
+}
+
+.scrollbar__thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--light-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    touch-action: none;
+}
+
+.scrollbar__thumb:active {
+    cursor: grabbing;
+}
+
+/* Three horizontal grip lines */
+.scrollbar__grip {
+    width: 2.3rem;
+    height: 1.5rem;
+    background: linear-gradient(
+        var(--dark-2) 0 17%,
+        transparent 17% 42%,
+        var(--dark-2) 42% 58%,
+        transparent 58% 83%,
+        var(--dark-2) 83% 100%
+    );
+    opacity: 0.6;
+}

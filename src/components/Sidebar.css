@@ -1,0 +1,62 @@
+/* All sizes in rem (1rem = 1% of window width), measured from the mockup */
+.sidebar {
+    background: var(--dark);
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.7rem;
+    --mask-cutout: var(--dark-2);
+}
+
+.sidebar__btn {
+    background: var(--dark-2);
+    color: var(--light);
+    border: none;
+    border-radius: 0;
+    font: inherit;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    box-sizing: border-box;
+    height: 8.4rem;
+    padding: 0 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    cursor: pointer;
+}
+
+.sidebar__btn:hover {
+    background: var(--mid);
+}
+
+.sidebar__btn--genre {
+    font-size: 3.9rem;
+}
+
+.sidebar__btn--accessibility {
+    font-size: 2.35rem;
+}
+
+.sidebar__btn--discovery {
+    font-size: 3.1rem;
+}
+
+.sidebar__home {
+    width: 8.8rem;
+    height: 8.8rem;
+    padding: 0;
+    margin-bottom: 0.8rem;
+}
+
+.sidebar__home-icon {
+    width: 7rem;
+    height: 5.5rem;
+}
+
+.sidebar__mask-icon {
+    width: 6rem;
+    height: 6.7rem;
+    flex: 0 0 auto;
+}
