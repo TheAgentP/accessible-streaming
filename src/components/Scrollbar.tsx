@@ -50,9 +50,20 @@ export default function Scrollbar({ targetRef }: Props) {
         ro.observe(el);
         ro.observe(track);
         Array.from(el.children).forEach((child) => ro.observe(child));
+        // Content swapped (e.g. a different movie's description): watch the new
+        // children too, and resize the thumb for the new content height.
+        const mo = new MutationObserver((mutations) => {
+            for (const m of mutations) {
+                m.addedNodes.forEach((n) => n instanceof Element && ro.observe(n));
+                m.removedNodes.forEach((n) => n instanceof Element && ro.unobserve(n));
+            }
+            update();
+        });
+        mo.observe(el, { childList: true });
         return () => {
             el.removeEventListener("scroll", update);
             ro.disconnect();
+            mo.disconnect();
         };
     }, [targetRef]);
 

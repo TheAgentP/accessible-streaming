@@ -1,9 +1,9 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Sidebar from "../components/Sidebar";
 import Scrollbar from "../components/Scrollbar";
 import { MicIcon, SpeakerIcon, StopIcon } from "../components/Icons";
 import { useSpeech } from "../accessibility/useSpeech";
-import { FEATURED_MOVIE as FEATURED } from "../constants";
+import { MOVIES, movieHeading } from "../constants";
 import "./Landing.css";
 
 export default function Landing() {
@@ -11,11 +11,36 @@ export default function Landing() {
     const descRef = useRef<HTMLDivElement>(null);
     const tts = useSpeech();
 
-    // Reads the movie title, then each paragraph of the description.
+    // Which movie the featured card shows. NEXT / BACK step through MOVIES,
+    // wrapping around at either end.
+    const [movieIndex, setMovieIndex] = useState(0);
+    const movie = MOVIES[movieIndex];
+    const heading = movieHeading(movie);
+
+    const showMovie = (step: number) => {
+        tts.stop(); // don't keep reading the previous movie's description
+        setMovieIndex((i) => (i + step + MOVIES.length) % MOVIES.length);
+    };
+    // BACK stays hidden until the viewer has pressed NEXT at least once
+    // (there's nothing to go back to on the first movie shown).
+    const [hasGoneNext, setHasGoneNext] = useState(false);
+
+    const handleBack = () => showMovie(-1);
+    const handleNext = () => {
+        setHasGoneNext(true);
+        showMovie(1);
+    };
+
+    // New movie: start its description from the top.
+    useEffect(() => {
+        descRef.current?.scrollTo({ top: 0 });
+    }, [movieIndex]);
+
+    // Reads the movie title and year, then each paragraph of the description.
     // Pressing the button again while it's reading stops it.
     const handleTextToSpeech = () => {
         if (tts.speaking) tts.stop();
-        else tts.speak([FEATURED.title, ...FEATURED.description]);
+        else tts.speak([heading, ...movie.description]);
     };
 
     // --- Hardcoded handlers (placeholders) ---
@@ -24,9 +49,7 @@ export default function Landing() {
         console.log("Search:", query);
     };
     const handleVoiceSearch = () => console.log("Voice search");
-    const handleBack = () => console.log("Back");
-    const handleWatch = () => console.log("Watch:", FEATURED.id);
-    const handleNext = () => console.log("Next");
+    const handleWatch = () => console.log("Watch:", movie.id);
 
     return (
         <div className="layout">
@@ -62,18 +85,27 @@ export default function Landing() {
                     <div className="featured__poster">
                         <img
                             className="featured__poster-img"
-                            src={FEATURED.image}
-                            alt={`${FEATURED.title} movie image`}
+                            src={movie.image}
+                            alt={`${heading} movie image`}
                         />
-                        <button type="button" className="btn btn--light featured__back" onClick={handleBack}>
-                            BACK
-                        </button>
+                        {hasGoneNext && (
+                            <button
+                                type="button"
+                                className="btn btn--light featured__back"
+                                aria-label="Back to previous movie"
+                                onClick={handleBack}
+                            >
+                                BACK
+                            </button>
+                        )}
                     </div>
 
                     <div className="featured__info">
                         <div className="featured__heading">
-                            <h2 id="featured-title" className="featured__title">
-                                {FEATURED.title}
+                            {/* aria-live: the new title is announced after NEXT / BACK
+                                (by screen readers and Narrator Mode) */}
+                            <h2 id="featured-title" className="featured__title" aria-live="polite">
+                                {heading}
                             </h2>
                             <button
                                 type="button"
@@ -102,8 +134,8 @@ export default function Landing() {
                                 role="region"
                                 aria-label="Description"
                             >
-                                {FEATURED.description.map((p, i) => (
-                                    <p key={i}>{p}</p>
+                                {movie.description.map((p, i) => (
+                                    <p key={`${movie.id}-${i}`}>{p}</p>
                                 ))}
                             </div>
                             <Scrollbar targetRef={descRef} />
@@ -113,7 +145,12 @@ export default function Landing() {
                             <button type="button" className="btn btn--light" onClick={handleWatch}>
                                 WATCH
                             </button>
-                            <button type="button" className="btn btn--light" onClick={handleNext}>
+                            <button
+                                type="button"
+                                className="btn btn--light"
+                                aria-label="Next movie"
+                                onClick={handleNext}
+                            >
                                 NEXT
                             </button>
                         </div>
