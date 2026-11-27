@@ -25,6 +25,13 @@ export const DEFAULT_SETTINGS: AccessibilitySettings = {
  */
 export const BUTTON_SIZE = { min: 34, max: 50, step: 2 } as const;
 
+/**
+ * Font size range. Reading text (headings, search box, movie title and
+ * description) is scaled by fontSize / default, so 42 = normal size,
+ * 34 ≈ 81%, 58 ≈ 138%. Button labels follow BUTTON SIZE instead.
+ */
+export const FONT_SIZE = { min: 34, max: 58, step: 2 } as const;
+
 export type AccessibilityContextValue = {
     settings: AccessibilitySettings;
     update: <K extends keyof AccessibilitySettings>(key: K, value: AccessibilitySettings[K]) => void;

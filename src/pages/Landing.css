@@ -16,7 +16,7 @@
 
 .search__title {
     margin: 0 0 1.2rem;
-    font-size: 5.5rem;
+    font-size: calc(5.5rem * var(--font-scale, 1));
     line-height: 1.1;
 }
 
@@ -26,10 +26,10 @@
 
 .search__field input {
     width: 100%;
-    height: 6.5rem;
+    height: calc(6.5rem * max(1, var(--font-scale, 1))); /* grows with large text */
     box-sizing: border-box;
     font: inherit;
-    font-size: 3rem;
+    font-size: calc(3rem * var(--font-scale, 1));
     padding: 0 6rem 0 1rem;
     border: 0.25rem solid var(--dark);
     border-radius: 0.5rem;
@@ -139,7 +139,7 @@
 .featured__title {
     margin: 0;
     color: var(--light);
-    font-size: 2.8rem;
+    font-size: calc(2.8rem * var(--font-scale, 1));
     line-height: 1.15;
 }
 
@@ -167,7 +167,7 @@
 .featured__desc {
     flex: 1;
     min-width: 0;
-    font-size: 1.6rem;
+    font-size: calc(1.6rem * var(--font-scale, 1));
     line-height: 1.35;
     overflow-y: auto;
 }

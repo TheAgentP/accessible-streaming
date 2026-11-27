@@ -68,9 +68,10 @@
 }
 
 .a11y-row__label {
-    font-size: 2.8rem;
+    /* Follows the Font Size setting. At large sizes a label may wrap onto two
+       lines rather than push the buttons out of the pop-up. */
+    font-size: calc(2.8rem * var(--font-scale, 1));
     line-height: 1.1;
-    white-space: nowrap;
     flex: 1;
     text-align: center;
 }
@@ -78,7 +79,7 @@
 /* Slider rows: label hugs the left, slider fills the rest */
 .a11y-row:has(.a11y-slider) .a11y-row__label,
 .a11y-row__label--start {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     text-align: left;
 }
 

@@ -23,7 +23,8 @@
 
 body {
     margin: 0;
-    font-size: 2.8rem;
+    /* Scaled by the Font Size setting; page text in em follows automatically */
+    font-size: calc(2.8rem * var(--font-scale, 1));
 }
 
 #root {
@@ -63,6 +64,14 @@ p {
 .search__mic {
     zoom: var(--button-scale, 1);
 }
+
+/*
+ * FONT SIZE (accessibility setting): AccessibilityProvider sets --font-scale
+ * on <html> (1 = normal). Reading text multiplies its size by it, e.g.
+ * font-size: calc(1.6rem * var(--font-scale, 1)). This includes the setting
+ * labels in the accessibility pop-up. Button labels use plain rem, so they
+ * stay as they are (buttons follow Button Size instead).
+ */
 
 /* Shared buttons */
 button {

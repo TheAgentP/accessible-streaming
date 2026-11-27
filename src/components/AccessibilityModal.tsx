@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BUTTON_SIZE, useAccessibility } from "../accessibility/settings";
+import { BUTTON_SIZE, FONT_SIZE, useAccessibility } from "../accessibility/settings";
 import { MinusIcon, PlusIcon } from "./Icons";
 import Scrollbar from "./Scrollbar";
 import "./AccessibilityModal.css";
@@ -10,13 +10,16 @@ type Props = {
 };
 
 // Settings live in AccessibilityProvider so they apply app-wide and persist.
-// Currently applied to the page: BUTTON SIZE. The rest are stored but not yet applied.
+// Currently applied: FONT SIZE (page text + these labels) and BUTTON SIZE. The rest are stored but not yet applied.
 export default function AccessibilityModal({ open, onClose }: Props) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const bodyRef = useRef<HTMLDivElement>(null);
 
     const { settings, update, reset } = useAccessibility();
     const { fontSize, buttonSize, contrast, brightness, narrator, sensitivity } = settings;
+
+    const changeFontSize = (delta: number) =>
+        update("fontSize", Math.min(FONT_SIZE.max, Math.max(FONT_SIZE.min, fontSize + delta)));
 
     const changeButtonSize = (delta: number) =>
         update(
@@ -62,7 +65,8 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Decrease font size"
-                            onClick={() => update("fontSize", fontSize - 1)}
+                            disabled={fontSize <= FONT_SIZE.min}
+                            onClick={() => changeFontSize(-FONT_SIZE.step)}
                         >
                             LESS <MinusIcon className="a11y-step__icon" />
                         </button>
@@ -73,7 +77,8 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Increase font size"
-                            onClick={() => update("fontSize", fontSize + 1)}
+                            disabled={fontSize >= FONT_SIZE.max}
+                            onClick={() => changeFontSize(FONT_SIZE.step)}
                         >
                             MORE <PlusIcon className="a11y-step__icon" />
                         </button>
