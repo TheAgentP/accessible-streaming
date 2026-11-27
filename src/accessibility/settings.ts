@@ -32,6 +32,22 @@ export const BUTTON_SIZE = { min: 34, max: 50, step: 2 } as const;
  */
 export const FONT_SIZE = { min: 34, max: 58, step: 2 } as const;
 
+/** Contrast slider range. 50 = the design's normal contrast. */
+export const CONTRAST = { min: 0, max: 100 } as const;
+
+/**
+ * Slider position → CSS contrast() amount. Below the middle it softens down
+ * to 60% (never so low the app becomes unreadable); above it, it strengthens
+ * up to 180%, which pushes the dark blues to near-black and the light blues
+ * to near-white.
+ */
+export function contrastAmount(contrast: number): number {
+    const mid = (CONTRAST.min + CONTRAST.max) / 2;
+    return contrast <= mid
+        ? 1 - ((mid - contrast) / (mid - CONTRAST.min)) * 0.4
+        : 1 + ((contrast - mid) / (CONTRAST.max - mid)) * 0.8;
+}
+
 export type AccessibilityContextValue = {
     settings: AccessibilitySettings;
     update: <K extends keyof AccessibilitySettings>(key: K, value: AccessibilitySettings[K]) => void;

@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
     AccessibilityContext,
     BUTTON_SIZE,
+    CONTRAST,
     FONT_SIZE,
     DEFAULT_SETTINGS,
+    contrastAmount,
     type AccessibilityContextValue,
     type AccessibilitySettings,
 } from "./settings";
@@ -27,6 +29,7 @@ function loadSettings(): AccessibilitySettings {
         const saved = { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } as AccessibilitySettings;
         saved.buttonSize = clampSetting(saved.buttonSize, BUTTON_SIZE, DEFAULT_SETTINGS.buttonSize);
         saved.fontSize = clampSetting(saved.fontSize, FONT_SIZE, DEFAULT_SETTINGS.fontSize);
+        saved.contrast = clampSetting(saved.contrast, CONTRAST, DEFAULT_SETTINGS.contrast);
         return saved;
     } catch {
         return DEFAULT_SETTINGS; // storage blocked or corrupted: use defaults
@@ -48,6 +51,14 @@ export default function AccessibilityProvider({ children }: { children: ReactNod
         const scale = settings.fontSize / DEFAULT_SETTINGS.fontSize;
         document.documentElement.style.setProperty("--font-scale", String(scale));
     }, [settings.fontSize]);
+
+    // Contrast → CSS filter applied to the page and the accessibility pop-up
+    // (see index.css). "none" at the normal setting, so nothing is filtered.
+    useEffect(() => {
+        const amount = contrastAmount(settings.contrast);
+        const filter = amount === 1 ? "none" : `contrast(${amount.toFixed(3)})`;
+        document.documentElement.style.setProperty("--page-filter", filter);
+    }, [settings.contrast]);
 
     // Narrator mode: speak what the viewer points at or focuses (see useNarrator).
     useNarrator(settings.narrator);
