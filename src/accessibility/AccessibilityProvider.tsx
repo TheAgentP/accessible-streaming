@@ -5,6 +5,7 @@ import {
     BUTTON_SIZE,
     CONTRAST,
     FONT_SIZE,
+    SENSITIVITY,
     DEFAULT_SETTINGS,
     brightnessAmount,
     contrastAmount,
@@ -33,6 +34,7 @@ function loadSettings(): AccessibilitySettings {
         saved.fontSize = clampSetting(saved.fontSize, FONT_SIZE, DEFAULT_SETTINGS.fontSize);
         saved.contrast = clampSetting(saved.contrast, CONTRAST, DEFAULT_SETTINGS.contrast);
         saved.brightness = clampSetting(saved.brightness, BRIGHTNESS, DEFAULT_SETTINGS.brightness);
+        saved.sensitivity = clampSetting(saved.sensitivity, SENSITIVITY, DEFAULT_SETTINGS.sensitivity);
         return saved;
     } catch {
         return DEFAULT_SETTINGS; // storage blocked or corrupted: use defaults

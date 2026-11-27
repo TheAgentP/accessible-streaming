@@ -1,0 +1,218 @@
+/* All sizes in rem (1rem = 1% of window width), measured from the mockup */
+.discovery {
+    flex: 1;
+    height: 100svh; /* exactly one screen, like a TV app */
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--dark);
+    /* Normally everything fits on one screen. At very large Font Size + Button
+       Size the page scrolls rather than squashing the movie (see body min-height). */
+    overflow-y: auto;
+}
+
+/* ---------- Header ---------- */
+.discovery__header {
+    flex: 0 0 auto;
+    color: var(--light);
+    padding: 0.9rem 1rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Row 1: BACK · FOR YOU · TRENDING · NEW · GENRES, filling the width. */
+.discovery__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+}
+
+.discovery__filters .btn {
+    flex: 1 1 auto;
+    height: 5.7rem;
+    font-size: 3.5rem;
+    padding: 0 0.6rem;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+/*
+ * Too wide for one line (large Button Size): split evenly, 3 on the first
+ * line and 2 on the second, each line filling the full width. Discovery.tsx
+ * measures and adds --two-rows; --measure is its momentary one-line test.
+ */
+.discovery__filters--two-rows .btn {
+    /* A third of the line (minus the gaps). The buttons are zoomed by Button
+       Size, which would scale this width too, so divide that back out; the
+       small 0.1rem margin absorbs rounding so 3 always fit. */
+    flex: 1 1 calc(((100% - 2 * 0.9rem) / 3 - 0.1rem) / var(--button-scale, 1));
+}
+
+.discovery__filters--measure {
+    flex-wrap: nowrap;
+}
+
+.discovery__filters--measure .btn {
+    flex: 0 0 auto;
+}
+
+/* Links styled as buttons need the hover stroke too (index.css covers <button>) */
+.discovery__filters a.btn:hover {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow:
+        0 0 0 0.25rem var(--dark),
+        0 0 0 0.5rem #fff;
+}
+
+/* The filter being shown stays highlighted: solid white instead of 65%,
+   even while hovered (this rule comes after, and outweighs, the hover one) */
+.discovery__filters a.discovery__filter[aria-current="page"] {
+    background: var(--light);
+}
+
+/* Row 2: "Showing: X" + ACCESSIBILITY */
+.discovery__status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.discovery__showing {
+    margin: 0;
+    min-width: 0;
+    font-size: calc(5rem * var(--font-scale, 1));
+    line-height: 1.1;
+    /* Long names / large Font Size wrap onto a second line rather than
+       pushing ACCESSIBILITY off-screen */
+    overflow-wrap: anywhere;
+}
+
+.discovery__a11y {
+    flex: 0 0 auto;
+    height: 7.7rem;
+    font-size: 4.8rem;
+    padding: 0 1rem;
+}
+
+/* ---------- Body: image + actions | title + description | movie arrows ---------- */
+.discovery__body {
+    flex: 1 0 auto;
+    /* Enough for a usable image + description; past this the page scrolls
+       (only at very large Font Size + Button Size) */
+    min-height: 28rem;
+    height: 0; /* with flex-grow: fill exactly the space left under the header */
+    background: var(--dark-2);
+    margin: 0 0.4rem 0.4rem;
+    padding: 0.7rem 0 0.7rem 0.7rem;
+    display: grid;
+    grid-template-columns: minmax(0, 46.5rem) minmax(0, 1fr) calc(9.5rem * var(--button-scale, 1));
+    grid-template-rows: minmax(0, 1fr);
+    gap: 1.2rem;
+}
+
+.discovery__body--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light);
+    font-size: calc(3.5rem * var(--font-scale, 1));
+}
+
+.discovery__media {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 0;
+}
+
+.discovery__image {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    object-fit: cover; /* fill the frame, cropping edges rather than stretching */
+    background: linear-gradient(160deg, var(--mid), var(--dark));
+    color: transparent; /* hide the alt text box if the image fails to load */
+}
+
+.discovery__actions {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.discovery__actions .btn {
+    flex: 1;
+    height: 6.8rem;
+    font-size: 5.2rem;
+}
+
+.discovery__tts-icon {
+    width: 6rem;
+    height: 5rem;
+}
+
+.discovery__info {
+    color: var(--light);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 0;
+}
+
+.discovery__title {
+    margin: 0;
+    text-align: center;
+    font-size: calc(3.6rem * var(--font-scale, 1));
+    line-height: 1.15;
+}
+
+.discovery__desc {
+    flex: 1;
+    min-height: 0;
+    padding-right: 0.8rem; /* keep text off the scrollbar */
+    font-size: calc(1.9rem * var(--font-scale, 1));
+    line-height: 1.45;
+    overflow-y: auto;
+}
+
+/* Up / down: previous / next movie. Tall dark buttons, like the mockup. */
+.discovery__arrows {
+    display: flex;
+    flex-direction: column;
+    margin: -0.7rem 0; /* run the full height of the body */
+}
+
+.discovery__arrow {
+    flex: 1;
+    background: var(--dark);
+    color: var(--light-2);
+    border: 0.15rem solid var(--light-2);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.discovery__arrow + .discovery__arrow {
+    border-top: none;
+}
+
+.discovery__arrow-icon {
+    width: calc(5rem * var(--button-scale, 1));
+    height: calc(6rem * var(--button-scale, 1));
+    stroke-width: 1;
+}
+
+.discovery__arrow:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Hover stroke inside the arrow's edges: the column sits against the edge of
+   the screen, where an outside stroke would be cut off. */
+.discovery__arrow:hover:not(:disabled) {
+    color: var(--light);
+    background: var(--dark-2);
+    box-shadow: inset 0 0 0 0.35rem #fff;
+}

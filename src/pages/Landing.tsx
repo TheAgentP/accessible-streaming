@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Sidebar from "../components/Sidebar";
-import Scrollbar from "../components/Scrollbar";
 import { MicIcon, SpeakerIcon, StopIcon } from "../components/Icons";
 import { useSpeech } from "../accessibility/useSpeech";
 import { MOVIES, movieHeading } from "../constants";
@@ -126,19 +125,16 @@ export default function Landing() {
                             </button>
                         </div>
 
-                        <div className="featured__desc-wrap">
-                            <div
-                                ref={descRef}
-                                className="featured__desc hide-native-scrollbar"
-                                tabIndex={0}
-                                role="region"
-                                aria-label="Description"
-                            >
-                                {movie.description.map((p, i) => (
-                                    <p key={`${movie.id}-${i}`}>{p}</p>
-                                ))}
-                            </div>
-                            <Scrollbar targetRef={descRef} />
+                        <div
+                            ref={descRef}
+                            className="featured__desc thin-scrollbar"
+                            tabIndex={0}
+                            role="region"
+                            aria-label="Description"
+                        >
+                            {movie.description.map((p, i) => (
+                                <p key={`${movie.id}-${i}`}>{p}</p>
+                            ))}
                         </div>
 
                         <div className="featured__actions">

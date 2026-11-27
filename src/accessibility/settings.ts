@@ -32,6 +32,9 @@ export const BUTTON_SIZE = { min: 34, max: 50, step: 2 } as const;
  */
 export const FONT_SIZE = { min: 34, max: 58, step: 2 } as const;
 
+/** Sensitivity range (LESS / MORE step by 1). Stored only, not applied yet. */
+export const SENSITIVITY = { min: 0, max: 100, step: 1 } as const;
+
 /** Contrast slider range. 50 = the design's normal contrast. */
 export const CONTRAST = { min: 0, max: 100 } as const;
 

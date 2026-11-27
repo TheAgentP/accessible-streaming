@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { BRIGHTNESS, BUTTON_SIZE, CONTRAST, FONT_SIZE, useAccessibility } from "../accessibility/settings";
+import { createPortal } from "react-dom";
+import { BRIGHTNESS, BUTTON_SIZE, CONTRAST, FONT_SIZE, SENSITIVITY, useAccessibility } from "../accessibility/settings";
 import { MinusIcon, PlusIcon } from "./Icons";
 import Scrollbar from "./Scrollbar";
 import "./AccessibilityModal.css";
@@ -28,6 +29,23 @@ export default function AccessibilityModal({ open, onClose }: Props) {
             Math.min(BUTTON_SIZE.max, Math.max(BUTTON_SIZE.min, buttonSize + delta)),
         );
 
+    const changeSensitivity = (delta: number) =>
+        update("sensitivity", Math.min(SENSITIVITY.max, Math.max(SENSITIVITY.min, sensitivity + delta)));
+
+    /*
+     * LESS / MORE at the end of their range. Not the `disabled` attribute: a
+     * disabled button drops keyboard focus, so a remote / keyboard user who
+     * presses MORE up to the limit would be thrown out of the pop-up.
+     * aria-disabled keeps focus where it is; screen readers and Narrator Mode
+     * still say "unavailable", and pressing it just does nothing.
+     */
+    const limit = (atLimit: boolean, onPress: () => void) => ({
+        "aria-disabled": atLimit,
+        onClick: () => {
+            if (!atLimit) onPress();
+        },
+    });
+
     // Native <dialog> + showModal() gives us focus trapping, Esc-to-close
     // and an inert background for free.
     useEffect(() => {
@@ -37,7 +55,10 @@ export default function AccessibilityModal({ open, onClose }: Props) {
         if (!open && dialog.open) dialog.close();
     }, [open]);
 
-    return (
+    // Rendered straight into <body> (a portal) so the pop-up is identical on
+    // every page: inside the sidebar it was picking up the sidebar's Button
+    // Size zoom, which made it bigger (and taller than the screen) on Landing.
+    return createPortal(
         <dialog
             ref={dialogRef}
             className="a11y-modal"
@@ -66,8 +87,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Decrease font size"
-                            disabled={fontSize <= FONT_SIZE.min}
-                            onClick={() => changeFontSize(-FONT_SIZE.step)}
+                            {...limit(fontSize <= FONT_SIZE.min, () => changeFontSize(-FONT_SIZE.step))}
                         >
                             LESS <MinusIcon className="a11y-step__icon" />
                         </button>
@@ -78,8 +98,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Increase font size"
-                            disabled={fontSize >= FONT_SIZE.max}
-                            onClick={() => changeFontSize(FONT_SIZE.step)}
+                            {...limit(fontSize >= FONT_SIZE.max, () => changeFontSize(FONT_SIZE.step))}
                         >
                             MORE <PlusIcon className="a11y-step__icon" />
                         </button>
@@ -110,8 +129,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Decrease button size"
-                            disabled={buttonSize <= BUTTON_SIZE.min}
-                            onClick={() => changeButtonSize(-BUTTON_SIZE.step)}
+                            {...limit(buttonSize <= BUTTON_SIZE.min, () => changeButtonSize(-BUTTON_SIZE.step))}
                         >
                             LESS <MinusIcon className="a11y-step__icon" />
                         </button>
@@ -122,8 +140,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Increase button size"
-                            disabled={buttonSize >= BUTTON_SIZE.max}
-                            onClick={() => changeButtonSize(BUTTON_SIZE.step)}
+                            {...limit(buttonSize >= BUTTON_SIZE.max, () => changeButtonSize(BUTTON_SIZE.step))}
                         >
                             MORE <PlusIcon className="a11y-step__icon" />
                         </button>
@@ -178,7 +195,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Decrease sensitivity"
-                            onClick={() => update("sensitivity", sensitivity - 1)}
+                            {...limit(sensitivity <= SENSITIVITY.min, () => changeSensitivity(-SENSITIVITY.step))}
                         >
                             LESS <MinusIcon className="a11y-step__icon" />
                         </button>
@@ -189,7 +206,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             type="button"
                             className="a11y-step"
                             aria-label="Increase sensitivity"
-                            onClick={() => update("sensitivity", sensitivity + 1)}
+                            {...limit(sensitivity >= SENSITIVITY.max, () => changeSensitivity(SENSITIVITY.step))}
                         >
                             MORE <PlusIcon className="a11y-step__icon" />
                         </button>
@@ -211,6 +228,7 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                 </div>
                 <Scrollbar targetRef={bodyRef} />
             </div>
-        </dialog>
+        </dialog>,
+        document.body,
     );
 }

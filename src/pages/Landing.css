@@ -157,16 +157,10 @@
 }
 
 /* Description + custom scrollbar side by side; text scrolls if it doesn't fit */
-.featured__desc-wrap {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    gap: 0.8rem;
-}
-
 .featured__desc {
     flex: 1;
-    min-width: 0;
+    min-height: 0;
+    padding-right: 0.8rem; /* keep text off the scrollbar */
     font-size: calc(1.6rem * var(--font-scale, 1));
     line-height: 1.35;
     overflow-y: auto;

@@ -47,7 +47,7 @@ export default function Genres() {
                     {GENRES.map((genre) => (
                         <li key={genre.id}>
                             <Link
-                                to={`/genres/${genre.id}`}
+                                to={`/discover?genre=${genre.id}`} /* Discovery, filtered to this genre */
                                 className="genres__tile"
                                 style={{ "--chars": longestWord(genre.name) } as CSSProperties}
                             >
