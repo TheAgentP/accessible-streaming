@@ -68,6 +68,15 @@ export function SpeakerIcon({ className }: IconProps) {
     );
 }
 
+/** Shown on the text-to-speech button while it's reading (press to stop). */
+export function StopIcon({ className }: IconProps) {
+    return (
+        <svg className={className} viewBox="0 0 32 28" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="4" width="20" height="20" rx="2" />
+        </svg>
+    );
+}
+
 export function ArrowUpIcon({ className }: IconProps) {
     return (
         <svg className={className} viewBox="0 0 14 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">

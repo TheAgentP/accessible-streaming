@@ -1,13 +1,22 @@
 import { useRef, useState, type FormEvent } from "react";
 import Sidebar from "../components/Sidebar";
 import Scrollbar from "../components/Scrollbar";
-import { MicIcon, SpeakerIcon } from "../components/Icons";
+import { MicIcon, SpeakerIcon, StopIcon } from "../components/Icons";
+import { useSpeech } from "../accessibility/useSpeech";
 import { FEATURED_MOVIE as FEATURED } from "../constants";
 import "./Landing.css";
 
 export default function Landing() {
     const [query, setQuery] = useState("");
     const descRef = useRef<HTMLDivElement>(null);
+    const tts = useSpeech();
+
+    // Reads the movie title, then each paragraph of the description.
+    // Pressing the button again while it's reading stops it.
+    const handleTextToSpeech = () => {
+        if (tts.speaking) tts.stop();
+        else tts.speak([FEATURED.title, ...FEATURED.description]);
+    };
 
     // --- Hardcoded handlers (placeholders) ---
     const handleSearch = (e: FormEvent) => {
@@ -15,7 +24,6 @@ export default function Landing() {
         console.log("Search:", query);
     };
     const handleVoiceSearch = () => console.log("Voice search");
-    const handleTextToSpeech = () => console.log("Text-to-speech:", FEATURED.title);
     const handleBack = () => console.log("Back");
     const handleWatch = () => console.log("Watch:", FEATURED.id);
     const handleNext = () => console.log("Next");
@@ -71,9 +79,16 @@ export default function Landing() {
                                 type="button"
                                 className="btn btn--light featured__tts"
                                 aria-label="Read description aloud"
+                                aria-pressed={tts.speaking}
+                                title={tts.supported ? undefined : "Text-to-speech isn't supported in this browser"}
+                                disabled={!tts.supported}
                                 onClick={handleTextToSpeech}
                             >
-                                <SpeakerIcon className="featured__tts-icon" />
+                                {tts.speaking ? (
+                                    <StopIcon className="featured__tts-icon" />
+                                ) : (
+                                    <SpeakerIcon className="featured__tts-icon" />
+                                )}
                             </button>
                         </div>
 
