@@ -3,6 +3,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const synth: SpeechSynthesis | undefined =
     typeof window !== "undefined" ? window.speechSynthesis : undefined;
 
+// True while a useSpeech reading is in progress, so Narrator Mode can avoid
+// talking over it when the pointer merely drifts across other buttons.
+let readingAloud = false;
+export const isReadingAloud = () => readingAloud;
+
 /**
  * Text-to-speech with the browser's built-in voices (Web Speech API).
  * `speak` reads the given chunks in order, replacing anything already being
@@ -19,6 +24,7 @@ export function useSpeech() {
     const stop = useCallback(() => {
         runRef.current++;
         queueRef.current = [];
+        readingAloud = false;
         synth?.cancel();
         setSpeaking(false);
     }, []);
@@ -30,7 +36,10 @@ export function useSpeech() {
 
         // One utterance per chunk: Chrome cuts off single utterances after ~15 seconds.
         const texts = chunks.map((t) => t.trim()).filter(Boolean);
-        if (texts.length === 0) return setSpeaking(false);
+        if (texts.length === 0) {
+            readingAloud = false;
+            return setSpeaking(false);
+        }
 
         const utterances = texts.map((text, i) => {
             const u = new SpeechSynthesisUtterance(text);
@@ -38,6 +47,7 @@ export function useSpeech() {
             const done = () => {
                 if (runRef.current === run && i === texts.length - 1) {
                     queueRef.current = [];
+                    readingAloud = false;
                     setSpeaking(false);
                 }
             };
@@ -45,6 +55,7 @@ export function useSpeech() {
             u.onerror = () => {
                 if (runRef.current === run) {
                     queueRef.current = [];
+                    readingAloud = false;
                     setSpeaking(false);
                 }
             };
@@ -52,6 +63,7 @@ export function useSpeech() {
         });
 
         queueRef.current = utterances;
+        readingAloud = true;
         setSpeaking(true);
         utterances.forEach((u) => synth.speak(u));
     }, []);
@@ -59,6 +71,7 @@ export function useSpeech() {
     // Stop reading when the component using it goes away (e.g. navigating off the page).
     useEffect(() => () => {
         runRef.current++;
+        readingAloud = false;
         synth?.cancel();
     }, []);
 

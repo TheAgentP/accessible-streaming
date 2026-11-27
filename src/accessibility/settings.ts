@@ -14,7 +14,7 @@ export const DEFAULT_SETTINGS: AccessibilitySettings = {
     buttonSize: 42,
     contrast: 50,
     brightness: 50,
-    narrator: false,
+    narrator: false, // off by default: screen-reader users would otherwise hear everything twice
     sensitivity: 42,
 };
 

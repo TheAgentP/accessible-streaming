@@ -120,8 +120,10 @@
     padding: 0;
 }
 
-/* Narrator on/off switch: styled like the sliders, with a "TURN ON" knob
-   that slides to the right end (and reads "TURN OFF") when switched on. */
+/* Narrator on/off switch: a track like the sliders' with a wide, square knob
+   that names the action ("TURN ON" / "TURN OFF"). Off = knob on the left;
+   on = knob at the right end and a darker track.
+   The row's label spells out the state ("NARRATOR MODE: ON"). */
 .a11y-switch {
     flex: 1;
     min-width: 24rem;

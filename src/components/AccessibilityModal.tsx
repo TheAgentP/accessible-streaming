@@ -10,7 +10,7 @@ type Props = {
 };
 
 // Settings live in AccessibilityProvider so they apply app-wide and persist.
-// Currently applied: FONT SIZE (page text + these labels) and BUTTON SIZE. The rest are stored but not yet applied.
+// Currently applied: FONT SIZE (page text + these labels), BUTTON SIZE and NARRATOR MODE. The rest are stored but not yet applied.
 export default function AccessibilityModal({ open, onClose }: Props) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const bodyRef = useRef<HTMLDivElement>(null);
@@ -139,11 +139,15 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                     </div>
 
                     <div className="a11y-row">
-                        <span id="a11y-narrator-label" className="a11y-row__label a11y-row__label--start">
-                            NARRATOR MODE
+                        <span className="a11y-row__label a11y-row__label--start">
+                            <span id="a11y-narrator-label">NARRATOR MODE</span>
+                            {/* Always shows the current state. Hidden from screen readers,
+                                which already hear it from the switch's on/off state. */}
+                            <span aria-hidden="true">: {narrator ? "ON" : "OFF"}</span>
                         </span>
-                        {/* On/off switch: the knob slides along the track. Screen readers
-                            hear "Narrator mode, switch, off/on". */}
+                        {/* On/off switch: the knob slides along the track and says what
+                            pressing it will do. Screen readers hear "Narrator mode,
+                            switch, off/on". */}
                         <button
                             type="button"
                             role="switch"

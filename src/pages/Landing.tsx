@@ -78,8 +78,10 @@ export default function Landing() {
                             <button
                                 type="button"
                                 className="btn btn--light featured__tts"
-                                aria-label="Read description aloud"
-                                aria-pressed={tts.speaking}
+                                /* Names the action, so narrator / screen readers say
+                                   "Read movie title, year, and description, button" or
+                                   "Stop reading, button" */
+                                aria-label={tts.speaking ? "Stop reading" : "Read movie title, year, and description"}
                                 title={tts.supported ? undefined : "Text-to-speech isn't supported in this browser"}
                                 disabled={!tts.supported}
                                 onClick={handleTextToSpeech}

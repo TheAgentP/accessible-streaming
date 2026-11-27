@@ -7,6 +7,7 @@ import {
     type AccessibilityContextValue,
     type AccessibilitySettings,
 } from "./settings";
+import { useNarrator } from "./useNarrator";
 
 const STORAGE_KEY = "accessibility-settings";
 
@@ -47,6 +48,9 @@ export default function AccessibilityProvider({ children }: { children: ReactNod
         const scale = settings.fontSize / DEFAULT_SETTINGS.fontSize;
         document.documentElement.style.setProperty("--font-scale", String(scale));
     }, [settings.fontSize]);
+
+    // Narrator mode: speak what the viewer points at or focuses (see useNarrator).
+    useNarrator(settings.narrator);
 
     useEffect(() => {
         try {
