@@ -173,6 +173,25 @@
     background: var(--dark-2);
 }
 
+/*
+ * Hover stroke for the dark buttons on the light panel: the global stroke
+ * (dark inside, white outside) would vanish here, so it's flipped: white
+ * against the dark button, dark against the light panel. The panel's 0.5rem
+ * padding leaves exactly enough room for it.
+ */
+.a11y-step:hover:not(:disabled),
+.a11y-toggle:hover:not(:disabled),
+.a11y-switch:hover .a11y-switch__knob {
+    box-shadow:
+        0 0 0 0.25rem #fff,
+        0 0 0 0.5rem var(--dark);
+}
+
+/* The switch's stroke goes on its knob (above), not around the whole track */
+.a11y-switch:hover:not(:disabled) {
+    box-shadow: none;
+}
+
 /* Range slider styled to match the mockup's chunky track + thumb */
 .a11y-slider {
     flex: 1;

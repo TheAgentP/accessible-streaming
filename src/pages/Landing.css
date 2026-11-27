@@ -114,6 +114,12 @@
 
 .featured__back.btn--light:hover {
     background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), var(--dark-2);
+    /* Draw the hover stroke inside the separator border (and away from the
+       image's clipped left/bottom edges) so it hugs the button face:
+       white against the card-blue border, dark against the light face. */
+    box-shadow:
+        inset 0 0 0 0.25rem #fff,
+        inset 0 0 0 0.5rem var(--dark);
 }
 
 .featured__info {

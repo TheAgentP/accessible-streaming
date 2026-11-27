@@ -103,6 +103,20 @@ button {
     background: var(--light-2);
 }
 
+/*
+ * HOVER STROKE: every button (and button-styled link) gets a two-tone ring on
+ * hover: dark next to the button, white outside it. One of the two always
+ * stands out, whether the button sits on a light or a dark background.
+ * box-shadow doesn't change the layout and doesn't clash with the yellow
+ * focus outline below.
+ */
+button:hover:not(:disabled),
+.sidebar__btn:hover {
+    box-shadow:
+        0 0 0 0.25rem var(--dark),
+        0 0 0 0.5rem #fff;
+}
+
 /* Visible keyboard focus everywhere */
 :focus-visible {
     outline: 0.3rem solid #f5b700;
