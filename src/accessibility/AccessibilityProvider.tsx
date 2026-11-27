@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
     AccessibilityContext,
+    BRIGHTNESS,
     BUTTON_SIZE,
     CONTRAST,
     FONT_SIZE,
     DEFAULT_SETTINGS,
+    brightnessAmount,
     contrastAmount,
     type AccessibilityContextValue,
     type AccessibilitySettings,
@@ -30,6 +32,7 @@ function loadSettings(): AccessibilitySettings {
         saved.buttonSize = clampSetting(saved.buttonSize, BUTTON_SIZE, DEFAULT_SETTINGS.buttonSize);
         saved.fontSize = clampSetting(saved.fontSize, FONT_SIZE, DEFAULT_SETTINGS.fontSize);
         saved.contrast = clampSetting(saved.contrast, CONTRAST, DEFAULT_SETTINGS.contrast);
+        saved.brightness = clampSetting(saved.brightness, BRIGHTNESS, DEFAULT_SETTINGS.brightness);
         return saved;
     } catch {
         return DEFAULT_SETTINGS; // storage blocked or corrupted: use defaults
@@ -52,13 +55,16 @@ export default function AccessibilityProvider({ children }: { children: ReactNod
         document.documentElement.style.setProperty("--font-scale", String(scale));
     }, [settings.fontSize]);
 
-    // Contrast → CSS filter applied to the page and the accessibility pop-up
-    // (see index.css). "none" at the normal setting, so nothing is filtered.
+    // Contrast + brightness → one CSS filter applied to the page and the
+    // accessibility pop-up (see index.css). "none" when both are at normal.
     useEffect(() => {
-        const amount = contrastAmount(settings.contrast);
-        const filter = amount === 1 ? "none" : `contrast(${amount.toFixed(3)})`;
-        document.documentElement.style.setProperty("--page-filter", filter);
-    }, [settings.contrast]);
+        const parts: string[] = [];
+        const contrast = contrastAmount(settings.contrast);
+        const brightness = brightnessAmount(settings.brightness);
+        if (contrast !== 1) parts.push(`contrast(${contrast.toFixed(3)})`);
+        if (brightness !== 1) parts.push(`brightness(${brightness.toFixed(3)})`);
+        document.documentElement.style.setProperty("--page-filter", parts.join(" ") || "none");
+    }, [settings.contrast, settings.brightness]);
 
     // Narrator mode: speak what the viewer points at or focuses (see useNarrator).
     useNarrator(settings.narrator);

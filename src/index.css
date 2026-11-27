@@ -74,8 +74,9 @@ p {
  */
 
 /*
- * CONTRAST (accessibility setting): AccessibilityProvider sets --page-filter
- * on <html> (e.g. "contrast(1.4)", or "none" at normal). It's applied to the
+ * CONTRAST and BRIGHTNESS (accessibility settings): AccessibilityProvider sets
+ * --page-filter on <html> (e.g. "contrast(1.4) brightness(0.8)", or "none"
+ * when both are at normal). It's applied to the
  * app and, separately, to the accessibility pop-up: the pop-up is drawn in
  * the browser's top layer, which filters on #root don't reach.
  */

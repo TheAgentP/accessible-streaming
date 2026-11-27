@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BUTTON_SIZE, CONTRAST, FONT_SIZE, useAccessibility } from "../accessibility/settings";
+import { BRIGHTNESS, BUTTON_SIZE, CONTRAST, FONT_SIZE, useAccessibility } from "../accessibility/settings";
 import { MinusIcon, PlusIcon } from "./Icons";
 import Scrollbar from "./Scrollbar";
 import "./AccessibilityModal.css";
@@ -10,7 +10,8 @@ type Props = {
 };
 
 // Settings live in AccessibilityProvider so they apply app-wide and persist.
-// Currently applied: FONT SIZE (page text + these labels), CONTRAST, BUTTON SIZE and NARRATOR MODE. The rest are stored but not yet applied.
+// Currently applied: FONT SIZE (page text + these labels), CONTRAST, BUTTON SIZE,
+// BRIGHTNESS and NARRATOR MODE. The rest are stored but not yet applied.
 export default function AccessibilityModal({ open, onClose }: Props) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const bodyRef = useRef<HTMLDivElement>(null);
@@ -131,8 +132,8 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                             id="a11y-brightness"
                             type="range"
                             className="a11y-slider"
-                            min={0}
-                            max={100}
+                            min={BRIGHTNESS.min}
+                            max={BRIGHTNESS.max}
                             value={brightness}
                             onChange={(e) => update("brightness", Number(e.target.value))}
                         />

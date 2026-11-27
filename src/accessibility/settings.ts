@@ -48,6 +48,18 @@ export function contrastAmount(contrast: number): number {
         : 1 + ((contrast - mid) / (CONTRAST.max - mid)) * 0.8;
 }
 
+/** Brightness slider range. 50 = the design's normal brightness. */
+export const BRIGHTNESS = { min: 0, max: 100 } as const;
+
+/**
+ * Slider position → CSS brightness() amount: 60% at the far left (dimmer,
+ * e.g. for a dark room or light sensitivity) up to 140% at the far right.
+ */
+export function brightnessAmount(brightness: number): number {
+    const mid = (BRIGHTNESS.min + BRIGHTNESS.max) / 2;
+    return 1 + ((brightness - mid) / (BRIGHTNESS.max - mid)) * 0.4;
+}
+
 export type AccessibilityContextValue = {
     settings: AccessibilitySettings;
     update: <K extends keyof AccessibilitySettings>(key: K, value: AccessibilitySettings[K]) => void;
