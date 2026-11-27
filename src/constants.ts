@@ -2,12 +2,19 @@
 
 /** Genres used to tag movies (and, later, to build the Genres page). */
 export const GENRES = [
-    { id: "animation", name: "Animation" },
+    { id: "action", name: "Action" },
     { id: "adventure", name: "Adventure" },
+    { id: "animation", name: "Animation" },
     { id: "biography", name: "Biography" },
     { id: "comedy", name: "Comedy" },
     { id: "drama", name: "Drama" },
     { id: "family", name: "Family" },
+    { id: "horror", name: "Horror" },
+    { id: "mystery", name: "Mystery" },
+    { id: "romance", name: "Romance" },
+    // Spelled out (not "Sci-Fi") so text-to-speech reads it naturally
+    { id: "science-fiction", name: "Science Fiction" },
+    { id: "thriller", name: "Thriller" },
 ] as const;
 
 export type Genre = (typeof GENRES)[number];
@@ -69,6 +76,72 @@ export const MOVIES: Movie[] = [
             "Made over more than five years by a tiny family team, the low-budget Chinese animated film was mocked for its crude 3D animation before becoming a surprise box-office hit.",
         ],
         image: "/posters/niu-lai.jpeg",
+    },
+    {
+        id: "her",
+        title: "Her",
+        year: 2013,
+        genres: ["drama", "romance", "science-fiction"],
+        description: [
+            "In near-future Los Angeles, lonely letter writer Theodore Twombly, still getting over his divorce, buys a new operating system with an artificial intelligence that names itself Samantha.",
+            "As Samantha learns and grows, the two fall in love, and Theodore has to work out what a relationship can be when one partner has no body. Directed by Spike Jonze, starring Joaquin Phoenix and the voice of Scarlett Johansson.",
+        ],
+        image: "/posters/her.jpg",
+    },
+    {
+        id: "the-matrix",
+        title: "The Matrix",
+        year: 1999,
+        genres: ["action", "science-fiction"],
+        description: [
+            "By day, Thomas Anderson writes software; by night, he is the hacker Neo. When the mysterious Morpheus finds him, Neo learns the truth: the world he knows is a computer simulation, built by machines to keep humanity asleep.",
+            "Freed from the Matrix, Neo joins Morpheus and Trinity in the fight against the machines, and starts to suspect he may be \"the One\" who can end the war.",
+        ],
+        image: "/posters/matrix.jpg",
+    },
+    {
+        id: "the-matrix-reloaded",
+        title: "The Matrix Reloaded",
+        year: 2003,
+        genres: ["action", "science-fiction"],
+        description: [
+            "Six months after the first film, the machines are drilling towards Zion, the last human city. Neo, Morpheus and Trinity have only days to stop them.",
+            "Neo's search for a way to end the war leads him deep into the Matrix, where an upgraded Agent Smith is copying himself, and towards the Architect, the program that designed it all.",
+        ],
+        image: "/posters/matrix-reloaded.avif",
+    },
+    {
+        id: "saw",
+        title: "Saw",
+        year: 2004,
+        genres: ["horror", "mystery", "thriller"],
+        description: [
+            "Two men wake up chained to pipes at opposite ends of a filthy bathroom, with a dead body lying between them. Neither knows how he got there.",
+            "They are the latest victims of the Jigsaw Killer, who traps people in deadly \"games\" to test how much they value their lives. As the clock runs down, they must work out what connects them before it's too late.",
+        ],
+        image: "/posters/saw.jpg",
+    },
+    {
+        id: "wall-e",
+        title: "WALL-E",
+        year: 2008,
+        genres: ["animation", "adventure", "family", "science-fiction"],
+        description: [
+            "Hundreds of years after humans left a trash-covered Earth, one small robot is still at work cleaning it up: WALL-E, who collects treasures and dreams of holding someone's hand.",
+            "When a sleek probe robot called EVE arrives looking for signs of life, WALL-E falls for her, and follows her across the galaxy on an adventure that could decide humanity's future.",
+        ],
+        image: "/posters/walle.jpg",
+    },
+    {
+        id: "the-spongebob-movie-search-for-squarepants",
+        title: "The SpongeBob Movie: Search for SquarePants",
+        year: 2025,
+        genres: ["animation", "adventure", "comedy", "family"],
+        description: [
+            "Desperate to prove he's a big guy, SpongeBob sets out to show Mr. Krabs how brave he is by following the Flying Dutchman, a mysterious ghost pirate.",
+            "The chase leads to a swashbuckling comedy adventure in the deepest depths of the sea.",
+        ],
+        image: "/posters/the-spongebob-movie-search-for-squarepants.jpg",
     },
 ];
 
