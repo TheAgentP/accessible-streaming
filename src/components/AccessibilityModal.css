@@ -76,6 +76,14 @@
     text-align: center;
 }
 
+/* A slider's number ("CONTRAST: 50"). Fixed width so the slider doesn't
+   shift as the value goes from 1 to 2 to 3 digits. */
+.a11y-row__value {
+    display: inline-block;
+    min-width: 3ch;
+    font-variant-numeric: tabular-nums;
+}
+
 /* Slider rows: label hugs the left, slider fills the rest */
 .a11y-row:has(.a11y-slider) .a11y-row__label,
 .a11y-row__label--start {

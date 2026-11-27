@@ -86,9 +86,14 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                     </div>
 
                     <div className="a11y-row">
-                        <label htmlFor="a11y-contrast" className="a11y-row__label">
-                            CONTRAST
-                        </label>
+                        <span className="a11y-row__label">
+                            <label htmlFor="a11y-contrast">CONTRAST</label>
+                            {/* Current value. Hidden from screen readers, which already
+                                hear it from the slider itself. */}
+                            <span aria-hidden="true">
+                                : <span className="a11y-row__value">{contrast}</span>
+                            </span>
+                        </span>
                         <input
                             id="a11y-contrast"
                             type="range"
@@ -125,9 +130,14 @@ export default function AccessibilityModal({ open, onClose }: Props) {
                     </div>
 
                     <div className="a11y-row">
-                        <label htmlFor="a11y-brightness" className="a11y-row__label">
-                            BRIGHTNESS
-                        </label>
+                        <span className="a11y-row__label">
+                            <label htmlFor="a11y-brightness">BRIGHTNESS</label>
+                            {/* Current value. Hidden from screen readers, which already
+                                hear it from the slider itself. */}
+                            <span aria-hidden="true">
+                                : <span className="a11y-row__value">{brightness}</span>
+                            </span>
+                        </span>
                         <input
                             id="a11y-brightness"
                             type="range"
