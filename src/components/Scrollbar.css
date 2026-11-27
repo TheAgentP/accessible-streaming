@@ -24,8 +24,16 @@
     justify-content: center;
 }
 
-.scrollbar__arrow:hover {
+/* :not(:disabled) matches the global button:hover:not(:disabled) rule's weight, so this wins */
+.scrollbar__arrow:hover:not(:disabled) {
     color: var(--light);
+    /*
+     * Hover stroke drawn just inside the arrow's own edges, so it always sits
+     * on top of the bar: an outside stroke (the global one in index.css) went
+     * under the neighbouring track, and was cut off where the scrollbar meets
+     * the edge of the screen. White against the dark arrow.
+     */
+    box-shadow: inset 0 0 0 0.25rem #fff;
 }
 
 .scrollbar__arrow svg {

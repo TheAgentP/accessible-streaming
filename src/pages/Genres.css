@@ -1,0 +1,118 @@
+/* All sizes in rem (1rem = 1% of window width), measured from the mockup */
+.genres {
+    flex: 1;
+    height: 100svh; /* exactly one screen, like a TV app */
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* ---------- Header: BACK · GENRES · ACCESSIBILITY ---------- */
+.genres__header {
+    flex: 0 0 auto;
+    background: var(--dark);
+    color: var(--light);
+    min-height: 11rem;
+    padding: 0 1.6rem;
+    /* BACK left, ACCESSIBILITY right, GENRES in the space between (as in the mockup) */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.genres__back {
+    width: 13.9rem;
+    height: 5.8rem;
+}
+
+.genres__a11y {
+    height: 5.8rem;
+    padding: 0 0.9rem;
+}
+
+.genres__title {
+    margin: 0;
+    /*
+     * Follows Font Size, but never so big that the header overflows. The
+     * buttons take (13.9rem BACK + 37.2rem ACCESSIBILITY) x Button Size, the
+     * padding and gaps 7.2rem, and "GENRES" is about 5 times as wide as its
+     * font size. So with Font Size AND Button Size both near their maximum,
+     * the title stops growing instead of pushing ACCESSIBILITY off-screen.
+     */
+    font-size: min(
+        5.5rem * var(--font-scale, 1),
+        (100rem - 7.2rem - 51.1rem * var(--button-scale, 1)) / 5
+    );
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* ---------- Genre tiles: 3 columns, scrolling, with the custom scrollbar ---------- */
+.genres__body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    background: var(--mid);
+}
+
+.genres__grid {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 1.9rem;
+    display: grid;
+    /*
+     * Tiles have a fixed size that scales with the Button Size setting, in
+     * both directions. Normal size = 3 per row (as in the mockup; 29.5rem is
+     * just under a third of the space left by the padding and scrollbar).
+     * Bigger tiles drop to 2 per row; the row is centred either way.
+     */
+    grid-template-columns: repeat(auto-fill, calc(29.5rem * var(--button-scale, 1)));
+    justify-content: center;
+    align-content: start;
+    gap: 1.5rem;
+}
+
+.genres__tile {
+    container-type: inline-size; /* lets the label size itself to the tile (cqi below) */
+    box-sizing: border-box;
+    aspect-ratio: 30.3 / 16.3; /* the mockup's tile shape, at any size */
+    /* % padding is a share of the tile's own width, so it scales with the tile too */
+    padding: 0 3.4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--light);
+    /* Between --dark and --mid, per the mockup */
+    background: color-mix(in srgb, var(--dark) 85%, var(--mid));
+    line-height: 1.1;
+}
+
+.genres__tile-label {
+    /*
+     * Sized entirely in cqi (1% of the tile's width), so the text is always
+     * directly proportional to the tile: when Button Size makes the tile 19%
+     * bigger, every label is exactly 19% bigger too.
+     *   - 18.6cqi = the design's 5.5rem on a normal-size tile;
+     *   - but small enough that the longest word (--chars letters, set per
+     *     tile) fits the width: ADVENTURE is smaller than ACTION. Multi-word
+     *     names (SCIENCE FICTION) wrap onto two lines.
+     * (cqi has to be used on a child of the tile, hence this span.)
+     */
+    font-size: min(18.6cqi, 90cqi / (var(--chars, 6) * 0.9));
+}
+
+/* The tile is dark on a mid-blue background: white ring against the tile,
+   dark ring against the background (same idea as the global button hover). */
+.genres__tile:hover {
+    background: color-mix(in srgb, var(--dark) 70%, var(--mid));
+    box-shadow:
+        0 0 0 0.25rem #fff,
+        0 0 0 0.5rem var(--dark);
+}
