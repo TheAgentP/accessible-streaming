@@ -66,23 +66,21 @@
     padding: 1.9rem;
     display: grid;
     /*
-     * Tiles have a fixed size that scales with the Button Size setting, in
-     * both directions. Normal size = 3 per row (as in the mockup; 29.5rem is
-     * just under a third of the space left by the padding and scrollbar).
-     * Bigger tiles drop to 2 per row; the row is centred either way.
+     * Cards always fill the width, in --columns columns (set in Genres.tsx
+     * from Button Size: 3, then 2, then 1). Button Size makes them taller.
      */
-    grid-template-columns: repeat(auto-fill, calc(29.5rem * var(--button-scale, 1)));
-    justify-content: center;
+    grid-template-columns: repeat(var(--columns, 3), minmax(0, 1fr));
+    grid-auto-rows: calc(16.3rem * var(--button-scale, 1));
     align-content: start;
     gap: 1.5rem;
 }
 
 .genres__tile {
-    container-type: inline-size; /* lets the label size itself to the tile (cqi below) */
+    /* lets the label size itself to the tile's height and width (cqh / cqi below) */
+    container-type: size;
     box-sizing: border-box;
-    aspect-ratio: 30.3 / 16.3; /* the mockup's tile shape, at any size */
-    /* % padding is a share of the tile's own width, so it scales with the tile too */
-    padding: 0 3.4%;
+    height: 100%;
+    padding: 0 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,16 +95,15 @@
 
 .genres__tile-label {
     /*
-     * Sized entirely in cqi (1% of the tile's width), so the text is always
-     * directly proportional to the tile: when Button Size makes the tile 19%
-     * bigger, every label is exactly 19% bigger too.
-     *   - 18.6cqi = the design's 5.5rem on a normal-size tile;
-     *   - but small enough that the longest word (--chars letters, set per
-     *     tile) fits the width: ADVENTURE is smaller than ACTION. Multi-word
-     *     names (SCIENCE FICTION) wrap onto two lines.
-     * (cqi has to be used on a child of the tile, hence this span.)
+     * Proportional to the card's height (which Button Size controls):
+     * 33.7cqh = the design's 5.5rem on a normal 16.3rem-tall card, so a
+     * 19% taller card has 19% bigger text.
+     * But never wider than the card: the longest word (--chars letters, set
+     * per tile) must fit its width (cqi), so ADVENTURE in a narrow 3-column
+     * card is smaller than ACTION. Multi-word names (SCIENCE FICTION) wrap.
+     * (Container units have to be used on a child of the tile, hence this span.)
      */
-    font-size: min(18.6cqi, 90cqi / (var(--chars, 6) * 0.9));
+    font-size: min(33.7cqh, 90cqi / (var(--chars, 6) * 0.9));
 }
 
 /* The tile is dark on a mid-blue background: white ring against the tile,

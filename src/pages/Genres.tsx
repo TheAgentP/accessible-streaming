@@ -4,7 +4,20 @@ import AccessibilityModal from "../components/AccessibilityModal";
 import Scrollbar from "../components/Scrollbar";
 import { ArrowLeftIcon } from "../components/Icons";
 import { GENRES } from "../constants";
+import { useAccessibility } from "../accessibility/settings";
 import "./Genres.css";
+
+/**
+ * Columns of genre cards for each Button Size. The cards always fill the
+ * width; Button Size makes them taller, and once they're tall enough the
+ * grid drops to fewer, wider cards: 3 up to normal size (42), 2 for 44-48,
+ * 1 at the maximum (50).
+ */
+function columnsFor(buttonSize: number): number {
+    if (buttonSize <= 42) return 3;
+    if (buttonSize <= 48) return 2;
+    return 1;
+}
 
 /** Length of a genre's longest word, used to fit its label to the tile (see Genres.css). */
 const longestWord = (name: string) => Math.max(...name.split(/\s+/).map((w) => w.length));
@@ -13,6 +26,7 @@ export default function Genres() {
     const navigate = useNavigate();
     const gridRef = useRef<HTMLUListElement>(null);
     const [a11yOpen, setA11yOpen] = useState(false);
+    const columns = columnsFor(useAccessibility().settings.buttonSize);
 
     // BACK always returns to the landing page.
     const handleBack = () => navigate("/");
@@ -44,6 +58,7 @@ export default function Genres() {
                 <ul
                     ref={gridRef}
                     className="genres__grid hide-native-scrollbar"
+                    style={{ "--columns": columns } as CSSProperties}
                     aria-label="Genres"
                 >
                     {GENRES.map((genre) => (
