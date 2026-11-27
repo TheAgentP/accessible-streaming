@@ -93,6 +93,15 @@ export function ArrowDownIcon({ className }: IconProps) {
     );
 }
 
+/** Shown before "BACK" on the page headers. */
+export function ArrowLeftIcon({ className }: IconProps) {
+    return (
+        <svg className={className} viewBox="0 0 16 14" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M15 7 H2 M7.5 1.5 L2 7 L7.5 12.5" />
+        </svg>
+    );
+}
+
 export function MinusIcon({ className }: IconProps) {
     return (
         <svg className={className} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

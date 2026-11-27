@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import AccessibilityModal from "../components/AccessibilityModal";
-import { ArrowDownIcon, ArrowUpIcon, SpeakerIcon, StopIcon } from "../components/Icons";
+import { ArrowDownIcon, ArrowLeftIcon, ArrowUpIcon, SpeakerIcon, StopIcon } from "../components/Icons";
 import { useSpeech } from "../accessibility/useSpeech";
 import { useAccessibility } from "../accessibility/settings";
 import {
@@ -100,10 +100,11 @@ export default function Discovery() {
                 >
                     <button
                         type="button"
-                        className="btn btn--light"
+                        className="btn btn--back"
                         aria-label={filter.kind === "genre" ? "Back to genres" : "Back to home"}
                         onClick={handleBack}
                     >
+                        <ArrowLeftIcon className="btn--back__icon" />
                         BACK
                     </button>
                     {TAGS.map((tag) => {

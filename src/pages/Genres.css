@@ -18,12 +18,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .genres__back {
-    width: 13.9rem;
     height: 5.8rem;
+    padding: 0 0.8rem;
 }
 
 .genres__a11y {
@@ -34,15 +34,16 @@
 .genres__title {
     margin: 0;
     /*
-     * Follows Font Size, but never so big that the header overflows. The
-     * buttons take (13.9rem BACK + 37.2rem ACCESSIBILITY) x Button Size, the
-     * padding and gaps 7.2rem, and "GENRES" is about 5 times as wide as its
-     * font size. So with Font Size AND Button Size both near their maximum,
-     * the title stops growing instead of pushing ACCESSIBILITY off-screen.
+     * Follows Font Size, but never so big that the header overflows. Measured
+     * at normal size: BACK 19.1rem + ACCESSIBILITY 37.2rem (both x Button
+     * Size), header padding + gaps 6.2rem, and "GENRES" is 4.8 x its font size
+     * wide. So the title reaches full size at max Font Size with normal
+     * buttons, and only stops growing when Button Size is large too, instead
+     * of pushing ACCESSIBILITY off-screen.
      */
     font-size: min(
         5.5rem * var(--font-scale, 1),
-        (100rem - 7.2rem - 51.1rem * var(--button-scale, 1)) / 5
+        (100rem - 6.2rem - 56.4rem * var(--button-scale, 1)) / 4.8
     );
     line-height: 1;
     white-space: nowrap;
@@ -89,8 +90,8 @@
     text-decoration: none;
     text-transform: uppercase;
     color: var(--light);
-    /* Between --dark and --mid, per the mockup */
-    background: color-mix(in srgb, var(--dark) 85%, var(--mid));
+    /* #071F35 (--dark) at 85%, over the grid's --mid background */
+    background: rgba(7, 31, 53, 0.85);
     line-height: 1.1;
 }
 
@@ -111,7 +112,7 @@
 /* The tile is dark on a mid-blue background: white ring against the tile,
    dark ring against the background (same idea as the global button hover). */
 .genres__tile:hover {
-    background: color-mix(in srgb, var(--dark) 70%, var(--mid));
+    background: rgba(7, 31, 53, 0.7); /* --dark at 70%: a little lighter on hover */
     box-shadow:
         0 0 0 0.25rem #fff,
         0 0 0 0.5rem var(--dark);

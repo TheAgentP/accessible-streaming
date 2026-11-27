@@ -2,6 +2,7 @@ import { useRef, useState, type CSSProperties } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccessibilityModal from "../components/AccessibilityModal";
 import Scrollbar from "../components/Scrollbar";
+import { ArrowLeftIcon } from "../components/Icons";
 import { GENRES } from "../constants";
 import "./Genres.css";
 
@@ -21,10 +22,11 @@ export default function Genres() {
             <header className="genres__header">
                 <button
                     type="button"
-                    className="btn btn--light genres__back"
+                    className="btn btn--back genres__back"
                     aria-label="Back to home"
                     onClick={handleBack}
                 >
+                    <ArrowLeftIcon className="btn--back__icon" />
                     BACK
                 </button>
                 <h1 className="genres__title">GENRES</h1>
