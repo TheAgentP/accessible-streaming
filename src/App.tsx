@@ -12,10 +12,10 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Landing />} />
-                    <Route path="/movie/:id" element={<MovieView />} />
                     <Route path="/watch/:id" element={<WatchView />} />
                     <Route path="/genres" element={<Genres />} />
                     <Route path="/discover" element={<Discovery />} />
+                    <Route path="/search" element={<MovieView />} />
                 </Routes>
             </BrowserRouter>
         </AccessibilityProvider>

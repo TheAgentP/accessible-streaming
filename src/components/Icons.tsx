@@ -37,6 +37,20 @@ export function MaskIcon({ className }: IconProps) {
     );
 }
 
+export function HouseIcon({ className }: IconProps) {
+    return (
+        <svg className={className} viewBox="0 0 48 44" fill="currentColor" aria-hidden="true">
+            {/* Roof and walls with the door cut out as a real hole (evenodd), so
+                the button behind shows through; chimney sits on the roof line */}
+            <path
+                fillRule="evenodd"
+                d="M24 2 L46 22 H40 V42 H8 V22 H2 Z M20 28 H28 V42 H20 Z
+                   M31 5 H37 V13.8 L31 8.4 Z"
+            />
+        </svg>
+    );
+}
+
 export function MicIcon({ className }: IconProps) {
     return (
         <svg className={className} viewBox="0 0 24 32" fill="currentColor" aria-hidden="true">

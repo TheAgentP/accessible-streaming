@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { MicIcon, SpeakerIcon, StopIcon } from "../components/Icons";
 import { useSpeech } from "../accessibility/useSpeech";
@@ -6,6 +7,7 @@ import { MOVIES, movieHeading } from "../constants";
 import "./Landing.css";
 
 export default function Landing() {
+    const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const descRef = useRef<HTMLDivElement>(null);
     const tts = useSpeech();
@@ -42,11 +44,13 @@ export default function Landing() {
         else tts.speak([heading, ...movie.description]);
     };
 
-    // --- Hardcoded handlers (placeholders) ---
+    // SEARCH opens the results page, best matches first (see search.ts).
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
-        console.log("Search:", query);
+        navigate(`/search?q=${encodeURIComponent(query.trim())}`);
     };
+
+    // --- Hardcoded handlers (placeholders) ---
     const handleVoiceSearch = () => console.log("Voice search");
     const handleWatch = () => console.log("Watch:", movie.id);
 
@@ -63,6 +67,7 @@ export default function Landing() {
                         <input
                             id="search-input"
                             type="search"
+                            placeholder="Movie Name"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                         />

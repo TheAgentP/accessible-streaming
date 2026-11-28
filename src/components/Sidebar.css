@@ -5,6 +5,10 @@
     display: flex;
     flex-direction: column;
     gap: 1.7rem;
+    /* With HOME too, at a large Button Size the buttons can be taller than
+       the screen: scroll rather than cut the last one off */
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 .sidebar__btn {
@@ -29,6 +33,16 @@
 
 .sidebar__btn:hover {
     background: rgba(255, 255, 255, 0.25);
+}
+
+.sidebar__btn--home {
+    font-size: 3.9rem;
+}
+
+.sidebar__house-icon {
+    width: 6.6rem;
+    height: 6rem;
+    flex: 0 0 auto;
 }
 
 .sidebar__btn--genre {
